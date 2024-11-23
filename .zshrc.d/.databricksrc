@@ -1,0 +1,91 @@
+function gpo () {
+  username=$(git config github.username)
+  branch=$(git branch --show-current)
+
+  if [ "$branch" = "master" ]; then
+    echo "Warning: You are on the master branch. Please switch to a project-specific branch before creating a PR."
+    return 1
+  fi
+
+  if [ "$1" = "pull" ]; then
+    git pull databricks master
+  fi
+
+  fork=$(git remote -v | grep origin -m 1 | grep -o 'github.com[:/]\S*' | cut -c 12- | sed 's/\//:/' | sed 's/\.git//')
+  git pp origin --force -u
+  open -a "Google Chrome" "https://github.com/databricks/universe/compare/master...$fork:$username/$branch?expand=1"
+}
+
+function gka() {
+  ~/universe/eng-tools/bin/get-kube-access ${@: 1}
+  # The below code breaks teleport on devbox
+  # DEVBOX_FQDN=$(ssh -G devbox.databricks.com | grep hostname | grep -v canon | sed 's/hostname //')
+  # ping -c 1 -W 1 $DEVBOX_FQDN >/dev/null 2>&1
+  # if [[ "$?" -eq 0 ]]; then
+  #   echo "Copying .kube/ creds to devbox"
+  #   rsync -e "ssh -o LogLevel=ERROR" -razq --exclude='*/cache' --exclude='*/http-cache' ~/.kube devbox.databricks.com:~/.
+
+  #   echo "Copying .databricks/ to devbox"
+  #   rsync -e "ssh -o LogLevel=ERROR" -razq --exclude='*/cache' ~/.databricks devbox.databricks.com:~/.
+  # fi
+}
+
+function tp() {
+  args=("${@[@]}")
+  ~/universe/bin/tshx ${@: 1}
+  if [[ -n "LC_DB_DEVBOX" ]]; then
+          sudo ln -fs /home/brad.mann/.tsh/keys/teleport.dev.databricks.com/brad.mann@databricks.com-x509.pem /etc/docker/certs.d/registry.dev.databricks.com/aa_client.cert; sudo ln -fs /home/brad.mann/.tsh/keys/teleport.dev.databricks.com/brad.mann@databricks.com /etc/docker/certs.d/registry.dev.databricks.com/aa_client.key
+  fi
+}
+
+function tpd() {
+        cd ~/universe
+        ./bin/tshx --env=dev kube-login --all
+        cd -
+}
+
+function tps() {
+        cd ~/universe
+        ./bin/tshx --env=staging kube-login --all
+        cd -
+}
+
+function tpp() {
+        cd ~/universe
+        ./bin/tshx --env=prod kube-login --all
+        cd -
+}
+
+
+function gda() {
+  ~/universe/eng-tools/bin/get-docker-access ${@: 1}
+}
+
+function grb() {
+  FILTER=$1
+  COMMAND="git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/"
+  if [ -n "$FILTER" ]; then
+    COMMAND="$COMMAND | grep $FILTER"
+  fi
+  BRANCHES=($(eval $COMMAND))
+  for branch in $BRANCHES; do
+    eval "git switch $branch"
+    eval "git fetch databricks master"
+    eval "git rebase databricks/master"
+    eval "git pp origin --force"
+  done
+}
+
+function dbs() {
+  export LC_DB_DEVBOX='true'
+  ssh -A -C -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o SendEnv=LC_DB_DEVBOX -o ServerAliveInterval=1740 -L 8771:127.0.0.1:8771 devbox.databricks.com
+}
+
+# Define aliases.
+alias cdu="cd -P ~/universe"
+alias cdu2="cd -P ~/universe2"
+alias db="devbox --repo ~/universe --repo ~/code/universe2"
+alias dbe="devbox --ephemeral --repo ~/universe --repo ~/code/universe2"
+alias dben="dbe --new-instance --aws-instance-type m6id.8xlarge"
+alias gpof="git pp origin --force"
+alias bz='bazel'
