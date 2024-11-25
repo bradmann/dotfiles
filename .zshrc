@@ -39,7 +39,7 @@ zstyle ':z4h:direnv:success' notify 'yes'
 zstyle ':z4h:ssh:example-hostname1'   enable 'yes'
 zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
 # The default value if none of the overrides above match the hostname.
-zstyle ':z4h:ssh:*'                   enable 'no'
+zstyle ':z4h:ssh:*'                   enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
@@ -98,6 +98,11 @@ compdef _directories md
 
 # Define named directories: ~w <=> Windows home directory on WSL.
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
+
+# Alias ls to lsd if it is available
+if hash lsd 2>/dev/null; then
+  alias ls=lsd
+fi
 
 # Add flags to existing aliases.
 alias ls="${aliases[ls]:-ls} -A"
