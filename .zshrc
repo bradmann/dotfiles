@@ -43,7 +43,7 @@ zstyle ':z4h:ssh:*'                   enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
-zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh' '~/.p10k.zsh' '~/.p10k.zsh.pwc' '~/.tmux.conf' '~/.vimrc' '~/.zshrc.d/*'
+zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh' '~/.p10k.zsh' '~/.p10k.zsh.pwc' '~/.tmux.conf' '~/.vimrc' '~/.zshrc.d/.*'
 
 # Improve the terminal title when connecting over SSH.
 zstyle ':z4h:term-title:ssh' preexec '%n@'${${${Z4H_SSH##*:}//\%/%%}:-%m}': ${1//\%/%%}'
