@@ -22,12 +22,21 @@ zstyle ':z4h:' prompt-at-bottom 'yes'
 # Mark up shell's output with semantic information.
 zstyle ':z4h:' term-shell-integration 'yes'
 
+zstyle ':z4h:' propagate-cwd yes
+
+
 # Right-arrow key accepts one character ('partial-accept') from
 # command autosuggestions or the whole thing ('accept')?
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 
 # Recursively traverse directories when TAB-completing files.
 zstyle ':z4h:fzf-complete' recurse-dirs 'no'
+
+# https://github.com/romkatv/zsh4humans/blob/master/tips.md#completions
+zstyle ':z4h:fzf-complete' fzf-bindings tab:repeat
+
+# https://github.com/romkatv/zsh4humans/blob/master/tips.md#fzf
+zstyle ':z4h:*' fzf-flags --color=hl:31,hl+:31
 
 # Enable direnv to automatically source .envrc files.
 zstyle ':z4h:direnv'         enable 'no'
@@ -43,7 +52,7 @@ zstyle ':z4h:ssh:*'                   enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
-zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh' '~/.p10k.zsh' '~/.p10k.zsh.pwc' '~/.tmux.conf' '~/.vimrc' '~/.zshrc.d/.*'
+zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh' '~/.p10k.zsh' '~/.p10k.zsh.pwc' '~/.tmux.conf' '~/.vimrc' '~/.zshrc.d'
 
 # Improve the terminal title when connecting over SSH.
 zstyle ':z4h:term-title:ssh' preexec '%n@'${${${Z4H_SSH##*:}//\%/%%}:-%m}': ${1//\%/%%}'
@@ -63,7 +72,7 @@ zstyle ':z4h:term-title:ssh' precmd  '%n@'${${${Z4H_SSH##*:}//\%/%%}:-%m}': %~'
 z4h init || return
 
 # Extend PATH.
-path=(~/bin ~/go/bin $path)
+path=(~/bin ~/go/bin ~/.cargo/bin $path)
 
 # Export environment variables.
 export GPG_TTY=$TTY
@@ -88,6 +97,13 @@ z4h bindkey z4h-cd-back    Shift+Left   # cd into the previous directory
 z4h bindkey z4h-cd-forward Shift+Right  # cd into the next directory
 z4h bindkey z4h-cd-up      Shift+Up     # cd into the parent directory
 z4h bindkey z4h-cd-down    Shift+Down   # cd into a child directory
+
+# https://github.com/romkatv/zsh4humans/blob/master/tips.md#prompt
+z4h bindkey z4h-eof Ctrl+D
+setopt ignore_eof
+POSTEDIT=$'\n\e[A'
+z4h bindkey z4h-accept-line Enter
+
 
 # Autoload functions.
 autoload -Uz zmv
