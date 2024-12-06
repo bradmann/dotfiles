@@ -72,7 +72,7 @@ zstyle ':z4h:term-title:ssh' precmd  '%n@'${${${Z4H_SSH##*:}//\%/%%}:-%m}': %~'
 z4h init || return
 
 # Extend PATH.
-path=(~/bin ~/go/bin ~/.cargo/bin $path)
+path=(~/bin /opt/homebrew/bin ~/go/bin ~/.cargo/bin $path)
 
 # Export environment variables.
 export GPG_TTY=$TTY
