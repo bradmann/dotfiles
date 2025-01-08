@@ -1,8 +1,9 @@
 #!/bin/bash
 
+
 system_type=$(uname -s)
 if [ "$system_type" = "Darwin" ]; then
     brew install lsd
 else
-    sudo apt install lsd -y
+    sudo -E apt install lsd -y
 fi

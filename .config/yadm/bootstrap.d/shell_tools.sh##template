@@ -1,12 +1,12 @@
 #!/bin/bash
 
 {% if env.LC_DB_DEVBOX == "true" %}
-sudo export DATABRICKS_ALLOW_INSTALL=1
+export DATABRICKS_ALLOW_INSTALL=1
 {% endif %}
 
 system_type=$(uname -s)
 if [ "$system_type" = "Darwin" ]; then
     brew install lsd
 else
-    sudo apt install lsd -y
+    sudo -E apt install lsd -y
 fi
