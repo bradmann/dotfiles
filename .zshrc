@@ -130,4 +130,5 @@ alias clear=z4h-clear-screen-soft-bottom
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
-
+# Show motd.dynamic if it exists.
+[ -e "/run/motd.dynamic" ] && cat /run/motd.dynamic
