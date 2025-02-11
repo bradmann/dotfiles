@@ -11,9 +11,7 @@ else
 fi
 
 if [ -n $LC_DB_DEVBOX ]; then
-  sudo DATABRICKS_ALLOW_INSTALL=1 apt update
   sudo DATABRICKS_ALLOW_INSTALL=1 snap install go --classic
   go install github.com/bazelbuild/buildtools/buildifier@latest
-  sudo DATABRICKS_ALLOW_INSTALL=1 apt install python-is-python3
   python -m pip install pylance
 fi
