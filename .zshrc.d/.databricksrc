@@ -89,3 +89,10 @@ alias dbe="devbox --ephemeral --repo ~/universe --repo ~/code/universe2"
 alias dben="dbe --new-instance --aws-instance-type m6id.8xlarge"
 alias gpof="git pp origin --force"
 alias bz='bazel'
+
+if [ -n $LC_DB_DEVBOX ]; then
+  sudo DATABRICKS_ALLOW_INSTALL=1 snap install go --classic
+  sudo DATABRICKS_ALLOW_INSTALL=1 apt install python-is-python3
+  python-is-python3
+  go install github.com/bazelbuild/buildtools/buildifier@latest
+fi
