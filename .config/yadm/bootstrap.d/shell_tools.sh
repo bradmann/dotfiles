@@ -20,7 +20,7 @@ else
 fi
 
 # Install node fnm and nodejs
-if [ "$system_type" = "Darwin" ] || [ ]"$system_type" = "Linux" ]; then
+if [ "$system_type" = "Darwin" ] || [ "$system_type" = "Linux" ]; then
     if ! command -v fnm &> /dev/null; then
         # Download and install fnm:
         curl -o- https://fnm.vercel.app/install | bash
@@ -55,7 +55,7 @@ elif [ "$system_type" = "Windows_NT" ]; then
 fi
 
 # Install uv: https://github.com/astral-sh/uv
-if [ "$system_type" = "Darwin" ] || [ ]"$system_type" = "Linux" ]; then
+if [ "$system_type" = "Darwin" ] || [ "$system_type" = "Linux" ]; then
     if ! command -v uv &> /dev/null; then
         curl -LsSf https://astral.sh/uv/install.sh | sh
     fi
