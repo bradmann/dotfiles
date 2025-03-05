@@ -35,7 +35,7 @@ uv self update
 
 # Install latest python, create a virtual environment, and activate it
 uv python install 3.12.0
-uv pin python 3.12.0
+uv python pin 3.12.0
 uv venv
 source .venv/bin/activate
 uv pip install pylance
