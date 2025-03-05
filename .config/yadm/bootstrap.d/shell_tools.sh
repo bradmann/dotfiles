@@ -25,7 +25,8 @@ if [ "$system_type" = "Darwin" ] || [ "$system_type" = "Linux" ]; then
         # Download and install fnm:
         curl -o- https://fnm.vercel.app/install | bash
 
-        source "$HOME/.zshrc"
+        # Update environment
+        exec z4h
     fi
 
     # Download and install Node.js:
