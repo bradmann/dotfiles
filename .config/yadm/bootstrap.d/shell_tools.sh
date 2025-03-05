@@ -19,6 +19,41 @@ else
     fi
 fi
 
+# Install node fnm and nodejs
+if [ "$system_type" = "Darwin" ] || [ ]"$system_type" = "Linux" ]; then
+    if ! command -v fnm &> /dev/null; then
+        # Download and install fnm:
+        curl -o- https://fnm.vercel.app/install | bash
+    fi
+
+    # Download and install Node.js:
+    fnm install --lts
+
+    # Verify the Node.js version:
+    node -v
+
+    # Download and install Yarn:
+    corepack enable yarn
+
+    # Verify Yarn version:
+    yarn -v
+elif [ "$system_type" = "Windows_NT" ]; then
+    # Download and install fnm:
+        winget install Schniz.fnm
+
+        # Download and install Node.js:
+        fnm install --lts
+
+        # Verify the Node.js version:
+        node -v
+
+        # Download and install Yarn:
+        corepack enable yarn
+
+        # Verify Yarn version:
+        yarn -v
+fi
+
 # Install uv: https://github.com/astral-sh/uv
 if [ "$system_type" = "Darwin" ] || [ ]"$system_type" = "Linux" ]; then
     if ! command -v uv &> /dev/null; then
