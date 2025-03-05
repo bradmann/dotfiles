@@ -26,7 +26,11 @@ if [ "$system_type" = "Darwin" ] || [ "$system_type" = "Linux" ]; then
         curl -o- https://fnm.vercel.app/install | bash
 
         # Update environment
-        exec z4h
+        FNM_PATH="$HOME/.local/share/fnm"
+        if [ -d "$FNM_PATH" ]; then
+            export PATH="$HOME/.local/share/fnm:$PATH"
+            eval "`fnm env`"
+        fi
     fi
 
     # Download and install Node.js:
