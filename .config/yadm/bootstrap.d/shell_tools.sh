@@ -40,7 +40,7 @@ if [ "$system_type" = "Darwin" ] || [ "$system_type" = "Linux" ]; then
     node -v
 
     # Download and install Yarn:
-    corepack enable yarn
+    export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && corepack enable yarn
 
     # Verify Yarn version:
     yarn -v
