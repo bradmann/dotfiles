@@ -4,7 +4,7 @@
 system_type=$(uname -s)
 
 # Install rust/cargo: https://www.rust-lang.org/tools/install
-if [ "$system_type" = "Darwin" || "$system_type" = "Linux" ]; then
+if [ "$system_type" = "Darwin" ] || [ "$system_type" = "Linux" ]; then
     if ! command -v cargo &> /dev/null; then
         curl https://sh.rustup.rs -sSf | sh -s -- -y
     fi
@@ -20,7 +20,7 @@ else
 fi
 
 # Install uv: https://github.com/astral-sh/uv
-if [ "$system_type" = "Darwin" || "$system_type" = "Linux" ]; then
+if [ "$system_type" = "Darwin" ] || [ ]"$system_type" = "Linux" ]; then
     if ! command -v uv &> /dev/null; then
         curl -LsSf https://astral.sh/uv/install.sh | sh
     fi
