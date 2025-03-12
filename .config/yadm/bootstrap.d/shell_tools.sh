@@ -1,7 +1,12 @@
 #!/bin/bash
 
-
+distro=$(lsb_release -si)
 system_type=$(uname -s)
+
+# Install build-essential on Ubuntu: https://packages.ubuntu.com/focal/build-essential
+if [ "$distro" = "Ubuntu" ]; then
+    sudo apt install -y build-essential
+fi
 
 # Install rust/cargo: https://www.rust-lang.org/tools/install
 if [ "$system_type" = "Darwin" ] || [ "$system_type" = "Linux" ]; then
