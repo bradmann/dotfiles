@@ -82,8 +82,7 @@ uv venv
 source .venv/bin/activate
 uv pip install pylance
 
-
-if [ -n $LC_DB_DEVBOX ]; then
+if [ -n "$LC_DB_DEVBOX" ]; then
   sudo DATABRICKS_ALLOW_INSTALL=1 snap install go --classic
   go install github.com/bazelbuild/buildtools/buildifier@latest
 fi
