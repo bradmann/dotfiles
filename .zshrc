@@ -140,4 +140,8 @@ if [ -d "$FNM_PATH" ]; then
   eval "`fnm env`"
 fi
 
-. "$HOME/.local/bin/env"
+FNM_PATH="/home/bradm/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/bradm/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
