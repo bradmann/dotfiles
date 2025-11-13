@@ -133,15 +133,3 @@ setopt no_auto_menu  # require an extra TAB press to open the completion menu
 # Show motd.dynamic if it exists.
 [ -e "/run/motd.dynamic" ] && cat /run/motd.dynamic
 
-# fnm
-FNM_PATH="/Users/brad.mann/Library/Application Support/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="/Users/brad.mann/Library/Application Support/fnm:$PATH"
-  eval "`fnm env`"
-fi
-
-FNM_PATH="/home/bradm/.local/share/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="/home/bradm/.local/share/fnm:$PATH"
-  eval "`fnm env`"
-fi

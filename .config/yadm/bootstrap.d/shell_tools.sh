@@ -1,5 +1,9 @@
 #!/bin/bash
 
+distro=$(lsb_release -si)
+if [ "$distro" = "Ubuntu" ]; then
+    apt install -y build-essential
+fi
 
 system_type=$(uname -s)
 
