@@ -94,3 +94,8 @@ if [ -n "$LC_DB_DEVBOX" ]; then
   sudo DATABRICKS_ALLOW_INSTALL=1 snap install go --classic
   go install github.com/bazelbuild/buildtools/buildifier@latest
 fi
+
+export PATH="/Users/brad.mann/universe/devtools/ai:$PATH"
+
+export I_DANGEROUSLY_OPT_IN_TO_UNSUPPORTED_ALPHA_TOOLS=true
+export GOOGLE_MCP_WRITE_ENABLED=1
