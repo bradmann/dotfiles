@@ -1,0 +1,42 @@
+keymap:
+  - name: "Global mac-style shortcuts"
+    remap:
+      # Basic edit commands
+      SUPER-C: C-C # ⌘C → Ctrl+C
+      SUPER-V: C-V # ⌘V → Ctrl+V
+      SUPER-X: C-X # ⌘X → Ctrl+X
+      SUPER-Z: C-Z # ⌘Z → Ctrl+Z
+      SUPER-SHIFT-Z: C-Y # ⌘⇧Z → Ctrl+Y (redo)
+      SUPER-A: C-A # ⌘A → Ctrl+A
+      SUPER-S: C-S # ⌘S → Ctrl+S
+      SUPER-T: C-T # ⌘T → Ctrl+T (new tab)
+      SUPER-W: C-W # ⌘W → Ctrl+W (close tab/window)
+      SUPER-Q: C-Q # ⌘Q → Ctrl+Q (quit – careful in terminals)
+      SUPER-N: C-N # ⌘N → Ctrl+N (new window)
+      SUPER-SHIFT-N: C-SHIFT-N # ⌘⇧N → Ctrl+⇧N (new window)
+
+      # App switching (Cmd+Tab)
+      SUPER-TAB: ALT-TAB # ⌘Tab → Alt+Tab
+      SUPER-SHIFT-TAB: ALT-SHIFT-TAB # ⌘⇧Tab → Alt+⇧Tab
+
+      # Line/document navigation
+      SUPER-LEFT: HOME # ⌘← → Home (start of line)
+      SUPER-RIGHT: END # ⌘→ → End (end of line)
+      SUPER-UP: C-HOME # ⌘↑ → Ctrl+Home (top of document)
+      SUPER-DOWN: C-END # ⌘↓ → Ctrl+End (bottom of document)
+
+      # Line/document selection
+      SUPER-SHIFT-LEFT: SHIFT-HOME # ⌘⇧← → select to line start
+      SUPER-SHIFT-RIGHT: SHIFT-END # ⌘⇧→ → select to line end
+      SUPER-SHIFT-UP: C-SHIFT-HOME # ⌘⇧↑ → select to top
+      SUPER-SHIFT-DOWN: C-SHIFT-END # ⌘⇧↓ → select to bottom
+
+      # Word navigation (Option+Arrow on macOS)
+      ALT-LEFT: C-LEFT # ⌥← → Ctrl+← (prev word)
+      ALT-RIGHT: C-RIGHT # ⌥→ → Ctrl+→ (next word)
+      ALT-SHIFT-LEFT: C-SHIFT-LEFT # ⌥⇧← → select prev word
+      ALT-SHIFT-RIGHT: C-SHIFT-RIGHT # ⌥⇧→ → select next word
+
+      # Delete-style behavior (this is approximate; tweak to taste)
+      SUPER-BACKSPACE: [SHIFT-HOME, BACKSPACE]
+      SUPER-DELETE: [SHIFT-END, DELETE]
