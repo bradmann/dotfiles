@@ -1,5 +1,11 @@
 keymap:
   - name: "Global mac-style shortcuts"
+    application:
+      not:
+        - org.kde.konsole
+        - kitty
+        - Alacritty
+        - yakuake
     remap:
       # Basic edit commands
       SUPER-C: C-C # ⌘C → Ctrl+C
@@ -14,6 +20,9 @@ keymap:
       SUPER-Q: C-Q # ⌘Q → Ctrl+Q (quit – careful in terminals)
       SUPER-N: C-N # ⌘N → Ctrl+N (new window)
       SUPER-SHIFT-N: C-SHIFT-N # ⌘⇧N → Ctrl+⇧N (new window)
+      SUPER-F: C-F # ⌘F → Ctrl+F (find)
+      SUPER-P: C-P # ⌘P → Ctrl+P (print)
+      SUPER-SHIFT-P: C-SHIFT-P # ⌘⇧P → Ctrl+⇧P (print preview)
 
       # App switching (Cmd+Tab)
       SUPER-TAB: ALT-TAB # ⌘Tab → Alt+Tab
@@ -40,3 +49,55 @@ keymap:
       # Delete-style behavior (this is approximate; tweak to taste)
       SUPER-BACKSPACE: [SHIFT-HOME, BACKSPACE]
       SUPER-DELETE: [SHIFT-END, DELETE]
+
+  - name: "Terminal-friendly mac-style shortcuts"
+    application:
+      only:
+        - org.kde.konsole
+        - kitty
+        - Alacritty
+        - yakuake
+        # again, adjust for your actual terminals
+    remap:
+      # mac-style copy/paste mapped to terminal-style Ctrl+Shift+...
+      SUPER-C: C-SHIFT-C # ⌘C → Ctrl+Shift+C (copy in most terminals)
+      SUPER-V: C-SHIFT-V # ⌘V → Ctrl+Shift+V (paste in most terminals)
+
+      # You *probably* do NOT want these to send pure Ctrl+X/Z/etc,
+      # because they interact with the shell. Either leave them unmapped
+      # or just pass Super through so the terminal ignores them:
+      SUPER-X: SUPER-X
+      SUPER-Z: SUPER-Z
+      SUPER-SHIFT-Z: SUPER-SHIFT-Z
+      SUPER-A: SUPER-A
+      SUPER-S: SUPER-S
+      SUPER-T: SUPER-T
+      SUPER-W: SUPER-W
+      SUPER-Q: SUPER-Q
+      SUPER-N: SUPER-N
+      SUPER-SHIFT-N: SUPER-SHIFT-N
+      SUPER-F: C-F # ⌘F → Ctrl+F (find)
+
+      # Arrow / word navigation: in shells you usually want Alt/Meta
+      # to work normally (M-b/M-f, etc.), so don't override them:
+      ALT-LEFT: ALT-LEFT
+      ALT-RIGHT: ALT-RIGHT
+      ALT-SHIFT-LEFT: ALT-SHIFT-LEFT
+      ALT-SHIFT-RIGHT: ALT-SHIFT-RIGHT
+
+      # Same reasoning for Cmd+arrows; many terminals already
+      # handle Home/End properly with Shift, etc., so you can
+      # either leave them alone:
+      SUPER-LEFT: SUPER-LEFT
+      SUPER-RIGHT: SUPER-RIGHT
+      SUPER-UP: SUPER-UP
+      SUPER-DOWN: SUPER-DOWN
+
+      SUPER-SHIFT-LEFT: SUPER-SHIFT-LEFT
+      SUPER-SHIFT-RIGHT: SUPER-SHIFT-RIGHT
+      SUPER-SHIFT-UP: SUPER-SHIFT-UP
+      SUPER-SHIFT-DOWN: SUPER-SHIFT-DOWN
+
+      # Same for delete-style behavior:
+      SUPER-BACKSPACE: SUPER-BACKSPACE
+      SUPER-DELETE: SUPER-DELETE
