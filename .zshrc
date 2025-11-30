@@ -132,3 +132,4 @@ setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 # Show motd.dynamic if it exists.
 [ -e "/run/motd.dynamic" ] && cat /run/motd.dynamic
+

@@ -90,7 +90,7 @@ alias dben="dbe --new-instance --aws-instance-type m6id.8xlarge"
 alias gpof="git pp origin --force"
 alias bz='bazel'
 
-if [ -n $LC_DB_DEVBOX ]; then
+if [ -n "$LC_DB_DEVBOX" ]; then
   sudo DATABRICKS_ALLOW_INSTALL=1 snap install go --classic
   go install github.com/bazelbuild/buildtools/buildifier@latest
 fi
