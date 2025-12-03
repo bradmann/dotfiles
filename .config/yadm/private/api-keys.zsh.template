@@ -1,0 +1,12 @@
+# Private API Keys for zsh-ai
+# This file should be stored in your yadm dotfiles-private repository
+# Copy this file to api-keys.zsh and add your actual API keys
+
+# Google Gemini API Key
+# Get your key from: https://makersuite.google.com/app/apikey
+export GEMINI_API_KEY="your-gemini-api-key-here"
+
+# Optional: Other API keys if you want to use different providers
+# export ANTHROPIC_API_KEY="your-anthropic-api-key-here"
+# export OPENAI_API_KEY="your-openai-api-key-here"
+

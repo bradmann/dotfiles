@@ -1,0 +1,8 @@
+# yadm encryption patterns
+# Files matching these patterns will be encrypted using GPG
+# Run 'yadm encrypt' to create the encrypted archive
+# Run 'yadm decrypt' to restore the files
+
+# Private API keys for zsh-ai
+.config/yadm/private/api-keys.zsh
+

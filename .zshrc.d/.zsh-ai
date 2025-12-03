@@ -1,0 +1,83 @@
+# zsh-ai: AI-powered shell command assistant
+# https://github.com/matheusml/zsh-ai
+
+# Source the zsh-ai plugin
+if [[ -f "$HOME/.zsh-plugins/zsh-ai/zsh-ai.plugin.zsh" ]]; then
+  source "$HOME/.zsh-plugins/zsh-ai/zsh-ai.plugin.zsh"
+else
+  echo "zsh-ai: Plugin not found at ~/.zsh-plugins/zsh-ai/"
+  echo "Run: cd ~/.zsh-plugins && git clone https://github.com/matheusml/zsh-ai.git"
+fi
+
+# Configuration
+# Choose your AI provider by setting ZSH_AI_PROVIDER and the corresponding API key
+
+# Source private API keys from yadm dotfiles-private repo if available
+# This file should contain: export GEMINI_API_KEY="your-key-here"
+if [[ -f "$HOME/.config/yadm/private/api-keys.zsh" ]]; then
+  source "$HOME/.config/yadm/private/api-keys.zsh"
+fi
+
+# Conditional provider selection: prefer llm CLI if available, otherwise use Gemini
+if command -v llm &> /dev/null; then
+  # Use llm command-line tool (Simon Willison's llm)
+  export ZSH_AI_PROVIDER="cmdline"
+  export ZSH_AI_CMDLINE_CMD="llm agent -t"
+  export ZSH_AI_CMDLINE_FORMAT="stdin-query-only"
+else
+  # Fall back to Google Gemini API
+  export ZSH_AI_PROVIDER="gemini"
+  export ZSH_AI_GEMINI_MODEL="gemini-2.5-flash"
+
+  # Warn if API key is not set
+  if [[ -z "$GEMINI_API_KEY" ]]; then
+    echo "zsh-ai: Warning - llm command not found and GEMINI_API_KEY not set"
+    echo "zsh-ai: Install llm with: pip install llm"
+    echo "zsh-ai: Or create ~/.config/yadm/private/api-keys.zsh with your Gemini API key"
+  fi
+fi
+
+# Advanced: Extend the AI prompt with custom instructions
+# export ZSH_AI_PROMPT_EXTEND="Always prefer modern CLI tools like ripgrep, fd, and bat."
+
+# ============================================================================
+# Additional provider options (commented out - for reference):
+# ============================================================================
+
+# Option 1: Anthropic Claude
+# export ANTHROPIC_API_KEY="your-api-key-here"
+# export ZSH_AI_PROVIDER="anthropic"
+# export ZSH_AI_ANTHROPIC_MODEL="claude-3-5-sonnet-20241022"  # optional
+
+# Option 2: OpenAI
+# export OPENAI_API_KEY="your-api-key-here"
+# export ZSH_AI_PROVIDER="openai"
+# export ZSH_AI_OPENAI_MODEL="gpt-4o"  # optional
+# export ZSH_AI_OPENAI_URL="https://api.openai.com/v1/chat/completions"  # optional
+
+# Option 3: Ollama (local, privacy-first)
+# First install Ollama: https://ollama.ai/download
+# Then run: ollama run llama3.2
+# export ZSH_AI_PROVIDER="ollama"
+# export ZSH_AI_OLLAMA_MODEL="llama3.2"  # optional
+# export ZSH_AI_OLLAMA_URL="http://localhost:11434"  # optional
+
+# Option 4: Command Line (custom configuration)
+# export ZSH_AI_PROVIDER="cmdline"
+# export ZSH_AI_CMDLINE_CMD="your-command-here"
+# export ZSH_AI_CMDLINE_FORMAT="args"  # or: stdin, query-only, stdin-query-only, custom
+#
+# Format options:
+#   - "args" (default): Pass system prompt and query as separate arguments
+#   - "stdin": Pass system prompt and query via stdin
+#   - "query-only": Pass only the query as argument
+#   - "stdin-query-only": Pass only the query via stdin
+#   - "custom": Use ZSH_AI_CMDLINE_CUSTOM_FMT with {system} and {query} placeholders
+
+# Usage:
+# Method 1 (recommended): Type "# your command in natural language" and press Enter
+#   Example: # find all files larger than 100MB
+#
+# Method 2: Use the zsh-ai command directly
+#   Example: zsh-ai "find all files larger than 100MB"
+
