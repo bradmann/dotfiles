@@ -13,7 +13,7 @@ function gpo () {
 
   fork=$(git remote -v | grep origin -m 1 | grep -o 'github.com[:/]\S*' | cut -c 12- | sed 's/\//:/' | sed 's/\.git//')
   git pp origin --force -u
-  open -a "Google Chrome" "https://github.com/databricks/universe/compare/master...$fork:$username/$branch?expand=1"
+  open_url "https://github.com/databricks/universe/compare/master...$fork:$username/$branch?expand=1" || echo "Branch created and pushed to remote. To create a PR, visit https://github.com/databricks/universe/compare/master...$fork:$username/$branch?expand=1"
 }
 
 function gka() {
@@ -29,33 +29,6 @@ function gka() {
   #   rsync -e "ssh -o LogLevel=ERROR" -razq --exclude='*/cache' ~/.databricks devbox.databricks.com:~/.
   # fi
 }
-
-function tp() {
-  args=("${@[@]}")
-  ~/universe/bin/tshx ${@: 1}
-  if [[ -n "LC_DB_DEVBOX" ]]; then
-          sudo ln -fs /home/brad.mann/.tsh/keys/teleport.dev.databricks.com/brad.mann@databricks.com-x509.pem /etc/docker/certs.d/registry.dev.databricks.com/aa_client.cert; sudo ln -fs /home/brad.mann/.tsh/keys/teleport.dev.databricks.com/brad.mann@databricks.com /etc/docker/certs.d/registry.dev.databricks.com/aa_client.key
-  fi
-}
-
-function tpd() {
-        cd ~/universe
-        ./bin/tshx --env=dev kube-login --all
-        cd -
-}
-
-function tps() {
-        cd ~/universe
-        ./bin/tshx --env=staging kube-login --all
-        cd -
-}
-
-function tpp() {
-        cd ~/universe
-        ./bin/tshx --env=prod kube-login --all
-        cd -
-}
-
 
 function gda() {
   ~/universe/eng-tools/bin/get-docker-access ${@: 1}
@@ -74,11 +47,6 @@ function grb() {
     eval "git rebase databricks/master"
     eval "git pp origin --force"
   done
-}
-
-function dbs() {
-  export LC_DB_DEVBOX='true'
-  ssh -A -C -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o SendEnv=LC_DB_DEVBOX -o ServerAliveInterval=1740 -L 8771:127.0.0.1:8771 devbox.databricks.com
 }
 
 # Define aliases.

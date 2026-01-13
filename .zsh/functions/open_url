@@ -1,0 +1,19 @@
+# Function to open URL in browser (works locally and in remote SSH)
+open_url() {
+  local url="$1"
+
+  if [[ -n "$BROWSER" ]]; then
+    # In Cursor/VS Code Remote SSH session
+    "$BROWSER" "$url"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS local
+    open "$url"
+  elif command -v xdg-open &> /dev/null; then
+    # Linux with desktop
+    xdg-open "$url"
+  else
+    # Fallback: print no support for opening URL
+    echo "No support for opening URL: $url"
+    return 1
+  fi
+}

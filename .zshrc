@@ -108,9 +108,14 @@ z4h bindkey z4h-accept-line Enter
 # Autoload functions.
 autoload -Uz zmv
 
-# Define functions and completions.
-function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
-compdef _directories md
+# Set up fpath and autoload
+fpath=(~/.zsh/functions $fpath) # Add your functions directory to fpath
+setopt EXTENDED_GLOB
+autoload -Uz ~/.zsh/functions/*
+
+# Initialize the completion system
+# This scans fpath for #compdef tags and registers _md for the md command
+autoload -Uz compinit && compinit
 
 # Define named directories: ~w <=> Windows home directory on WSL.
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
