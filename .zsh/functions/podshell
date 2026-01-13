@@ -1,0 +1,12 @@
+# podshell - Open a shell in a Kubernetes pod container
+# Usage: podshell <pod> <container>
+
+function podshell() {
+  if [[ -z "$1" || -z "$2" ]]; then
+    echo "Usage: podshell <pod> <container>"
+    return 1
+  fi
+  kubectl exec -it "$1" -c "$2" -- /bin/bash
+}
+
+podshell "$@"

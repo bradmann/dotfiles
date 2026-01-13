@@ -1,0 +1,8 @@
+# gda - Get Docker access wrapper
+# Usage: gda [args...]
+
+function gda() {
+  ~/universe/eng-tools/bin/get-docker-access "$@"
+}
+
+gda "$@"

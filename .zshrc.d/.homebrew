@@ -1,15 +1,14 @@
-# Configure homebrew environment on MacOS
-if [ "$(uname -s)" = "Darwin" ]; then
-    if [ -f "/opt/homebrew/bin/brew" ]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [ -f "/usr/local/bin/brew" ]; then
-        eval "$(/usr/local/bin/brew shellenv)"
-    fi
-fi
+# Homebrew shell environment
+# Only loaded on macOS where Homebrew is installed
 
-# Load nvm if it exists
-export NVM_DIR="$HOME/.nvm"
-if [ -n "$HOMEBREW_PREFIX" ]; then
-    [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" # This loads nvm
-    [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
+# Skip on non-macOS systems
+[[ "$OSTYPE" == darwin* ]] || return 0
+
+# Initialize Homebrew environment
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+  # Apple Silicon
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f "/usr/local/bin/brew" ]]; then
+  # Intel Mac
+  eval "$(/usr/local/bin/brew shellenv)"
 fi

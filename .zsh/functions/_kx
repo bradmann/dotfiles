@@ -1,0 +1,10 @@
+#compdef kx
+
+# Completion for kx - completes kubectl contexts
+_kx() {
+  local contexts
+  contexts=(${(f)"$(kubectl config get-contexts -o name 2>/dev/null)"})
+  _describe -t contexts 'kubernetes contexts' contexts
+}
+
+_kx "$@"

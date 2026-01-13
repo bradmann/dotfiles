@@ -1,0 +1,18 @@
+# Shell options
+# http://zsh.sourceforge.net/Doc/Release/Options.html
+
+# Globbing
+setopt glob_dots      # no special treatment for file names with a leading dot
+setopt EXTENDED_GLOB  # enable extended globbing
+
+# Completion
+setopt no_auto_menu   # require an extra TAB press to open the completion menu
+
+# EOF behavior (works with z4h-eof binding)
+setopt ignore_eof
+
+# Prompt positioning (for prompt-at-bottom)
+POSTEDIT=$'\n\e[A'
+
+# Show motd.dynamic if it exists (Linux)
+[[ -e "/run/motd.dynamic" ]] && cat /run/motd.dynamic

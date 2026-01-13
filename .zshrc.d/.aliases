@@ -1,8 +1,36 @@
-alias ls='lsd'
-alias ll='ls -l'
-alias la='ls -a'
+# Shell aliases
+# Cross-platform with tool availability checks
+
+# ==============================================================================
+# File listing (lsd if available, otherwise standard ls)
+# ==============================================================================
+
+if command -v lsd &>/dev/null; then
+  alias ls='lsd -A'
+  alias ll='lsd -lA'
+  alias la='lsd -a'
+else
+  alias ls='ls -A'
+  alias ll='ls -lA'
+  alias la='ls -a'
+fi
+
+# ==============================================================================
+# Directory navigation
+# ==============================================================================
+
 alias tree='tree -a -I .git'
-alias k="kubectl"
-alias kx='f() { [ "$1" ] && kubectl config use-context $1 || kubectl config current-context ; } ; f'
-alias kn='f() { [ "$1" ] && kubectl config set-context --current --namespace $1 || kubectl config view --minify | grep namespace | cut -d" " -f6 ; } ; f'
-alias podshell='f() { kubectl exec -it $1 -c $2 -- /bin/bash ; } ; f'
+
+# ==============================================================================
+# Kubernetes (kubectl must be available)
+# ==============================================================================
+
+if command -v kubectl &>/dev/null; then
+  alias k="kubectl"
+fi
+
+# ==============================================================================
+# z4h utilities
+# ==============================================================================
+
+alias clear=z4h-clear-screen-soft-bottom

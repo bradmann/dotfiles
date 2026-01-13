@@ -1,0 +1,10 @@
+#compdef kn
+
+# Completion for kn - completes kubectl namespaces
+_kn() {
+  local namespaces
+  namespaces=(${(f)"$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}' 2>/dev/null | tr ' ' '\n')"})
+  _describe -t namespaces 'kubernetes namespaces' namespaces
+}
+
+_kn "$@"

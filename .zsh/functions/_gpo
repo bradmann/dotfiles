@@ -1,0 +1,4 @@
+#compdef gpo
+
+# Completion for gpo - only completes "pull" as first argument
+_arguments '1:action:(pull)'

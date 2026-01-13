@@ -1,0 +1,17 @@
+# PATH configuration
+# Consolidated PATH exports for cross-platform use
+
+# Core development tools
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
+
+# LM Studio CLI (if installed)
+[[ -d "$HOME/.lmstudio/bin" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
+
+# Antigravity (if installed)
+[[ -d "$HOME/.antigravity/antigravity/bin" ]] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
+# Databricks AI tools (work machines only, guarded in .databricksrc)
+# This is now handled in .databricksrc with the ~/.databricks guard

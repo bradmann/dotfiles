@@ -1,0 +1,14 @@
+# kx - Kubectl context switcher
+# Usage: kx [context]
+#   If context is provided, switches to that context
+#   If no context is provided, shows current context
+
+function kx() {
+  if [[ -n "$1" ]]; then
+    kubectl config use-context "$1"
+  else
+    kubectl config current-context
+  fi
+}
+
+kx "$@"

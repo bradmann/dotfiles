@@ -1,55 +1,12 @@
-function gpo () {
-  username=$(git config github.username)
-  branch=$(git branch --show-current)
+# Databricks-specific configuration
+# Only loaded on work machines (where ~/.databricks exists)
 
-  if [ "$branch" = "master" ]; then
-    echo "Warning: You are on the master branch. Please switch to a project-specific branch before creating a PR."
-    return 1
-  fi
+[[ -d "$HOME/.databricks" ]] || return 0
 
-  if [ "$1" = "pull" ]; then
-    git pull databricks master
-  fi
+# ==============================================================================
+# Aliases
+# ==============================================================================
 
-  fork=$(git remote -v | grep origin -m 1 | grep -o 'github.com[:/]\S*' | cut -c 12- | sed 's/\//:/' | sed 's/\.git//')
-  git pp origin --force -u
-  open_url "https://github.com/databricks/universe/compare/master...$fork:$username/$branch?expand=1" || echo "Branch created and pushed to remote. To create a PR, visit https://github.com/databricks/universe/compare/master...$fork:$username/$branch?expand=1"
-}
-
-function gka() {
-  ~/universe/eng-tools/bin/get-kube-access ${@: 1}
-  # The below code breaks teleport on devbox
-  # DEVBOX_FQDN=$(ssh -G devbox.databricks.com | grep hostname | grep -v canon | sed 's/hostname //')
-  # ping -c 1 -W 1 $DEVBOX_FQDN >/dev/null 2>&1
-  # if [[ "$?" -eq 0 ]]; then
-  #   echo "Copying .kube/ creds to devbox"
-  #   rsync -e "ssh -o LogLevel=ERROR" -razq --exclude='*/cache' --exclude='*/http-cache' ~/.kube devbox.databricks.com:~/.
-
-  #   echo "Copying .databricks/ to devbox"
-  #   rsync -e "ssh -o LogLevel=ERROR" -razq --exclude='*/cache' ~/.databricks devbox.databricks.com:~/.
-  # fi
-}
-
-function gda() {
-  ~/universe/eng-tools/bin/get-docker-access ${@: 1}
-}
-
-function grb() {
-  FILTER=$1
-  COMMAND="git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/"
-  if [ -n "$FILTER" ]; then
-    COMMAND="$COMMAND | grep $FILTER"
-  fi
-  BRANCHES=($(eval $COMMAND))
-  for branch in $BRANCHES; do
-    eval "git switch $branch"
-    eval "git fetch databricks master"
-    eval "git rebase databricks/master"
-    eval "git pp origin --force"
-  done
-}
-
-# Define aliases.
 alias cdu="cd -P ~/universe"
 alias cdu2="cd -P ~/universe2"
 alias db="devbox --repo ~/universe --repo ~/code/universe2"
@@ -58,12 +15,25 @@ alias dben="dbe --new-instance --aws-instance-type m6id.8xlarge"
 alias gpof="git pp origin --force"
 alias bz='bazel'
 
-if [ -n "$LC_DB_DEVBOX" ]; then
-  sudo DATABRICKS_ALLOW_INSTALL=1 snap install go --classic
-  go install github.com/bazelbuild/buildtools/buildifier@latest
-fi
+# ==============================================================================
+# PATH
+# ==============================================================================
 
-export PATH="/Users/brad.mann/universe/devtools/ai:$PATH"
+# Databricks AI tools
+[[ -d "$HOME/universe/devtools/ai" ]] && export PATH="$HOME/universe/devtools/ai:$PATH"
+
+# ==============================================================================
+# Environment Variables
+# ==============================================================================
 
 export I_DANGEROUSLY_OPT_IN_TO_UNSUPPORTED_ALPHA_TOOLS=true
 export GOOGLE_MCP_WRITE_ENABLED=1
+
+# ==============================================================================
+# Devbox Setup
+# ==============================================================================
+
+if [[ -n "$LC_DB_DEVBOX" ]]; then
+  sudo DATABRICKS_ALLOW_INSTALL=1 snap install go --classic
+  go install github.com/bazelbuild/buildtools/buildifier@latest
+fi

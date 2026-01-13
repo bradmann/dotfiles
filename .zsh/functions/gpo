@@ -1,0 +1,24 @@
+# gpo - Git push origin and open PR creation URL
+# Usage: gpo [pull]
+#   If "pull" is passed, pulls from databricks master first
+
+function gpo() {
+  local username=$(git config github.username)
+  local branch=$(git branch --show-current)
+
+  if [[ "$branch" = "master" ]]; then
+    echo "Warning: You are on the master branch. Please switch to a project-specific branch before creating a PR."
+    return 1
+  fi
+
+  if [[ "$1" = "pull" ]]; then
+    git pull databricks master
+  fi
+
+  local fork=$(git remote -v | grep origin -m 1 | grep -o 'github.com[:/]\S*' | cut -c 12- | sed 's/\//:/' | sed 's/\.git//')
+  git pp origin --force -u
+  open_url "https://github.com/databricks/universe/compare/master...$fork:$username/$branch?expand=1" || \
+    echo "Branch created and pushed to remote. To create a PR, visit https://github.com/databricks/universe/compare/master...$fork:$username/$branch?expand=1"
+}
+
+gpo "$@"

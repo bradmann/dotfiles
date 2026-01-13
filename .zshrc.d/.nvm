@@ -1,0 +1,16 @@
+# NVM - Node Version Manager
+# Auto-detects installation method (Homebrew or nvm-sh installer)
+
+export NVM_DIR="$HOME/.nvm"
+
+# Try to load NVM from various possible locations
+if [[ -n "$HOMEBREW_PREFIX" && -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ]]; then
+  # Homebrew installation (macOS)
+  source "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"
+elif [[ -s "$NVM_DIR/nvm.sh" ]]; then
+  # Standard nvm-sh installation
+  source "$NVM_DIR/nvm.sh"
+fi
+
+# NVM provides zsh completion automatically when sourced
+# No additional completion setup needed

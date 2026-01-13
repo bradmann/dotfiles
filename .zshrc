@@ -4,6 +4,10 @@
 #
 # Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 
+# ==============================================================================
+# z4h Pre-Init Configuration (must be before z4h init)
+# ==============================================================================
+
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'yes'
@@ -23,7 +27,6 @@ zstyle ':z4h:' prompt-at-bottom 'yes'
 zstyle ':z4h:' term-shell-integration 'yes'
 
 zstyle ':z4h:' propagate-cwd yes
-
 
 # Right-arrow key accepts one character ('partial-accept') from
 # command autosuggestions or the whole thing ('accept')?
@@ -58,12 +61,9 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh' '~/.p10k.zsh' '~/.
 zstyle ':z4h:term-title:ssh' preexec '%n@'${${${Z4H_SSH##*:}//\%/%%}:-%m}': ${1//\%/%%}'
 zstyle ':z4h:term-title:ssh' precmd  '%n@'${${${Z4H_SSH##*:}//\%/%%}:-%m}': %~'
 
-# Clone additional Git repositories from GitHub.
-#
-# This doesn't do anything apart from cloning the repository and keeping it
-# up-to-date. Cloned files can be used after `z4h init`. This is just an
-# example. If you don't plan to use Oh My Zsh, delete this line.
-# z4h install ohmyzsh/ohmyzsh || return
+# ==============================================================================
+# z4h Initialization
+# ==============================================================================
 
 # Install or update core components (fzf, zsh-autosuggestions, etc.) and
 # initialize Zsh. After this point console I/O is unavailable until Zsh
@@ -71,78 +71,46 @@ zstyle ':z4h:term-title:ssh' precmd  '%n@'${${${Z4H_SSH##*:}//\%/%%}:-%m}': %~'
 # perform network I/O must be done above. Everything else is best done below.
 z4h init || return
 
-# Extend PATH.
-export PATH="$HOME/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.pyenv/bin:$PATH"
+# ==============================================================================
+# Function Loading
+# ==============================================================================
 
-# Export environment variables.
-export GPG_TTY=$TTY
-
-# Source additional local files if they exist.
-z4h source ~/.env.zsh
-
-# Source additional local files if they exist.
-z4h source ~/.zshrc.d/.[^_]*
-
-# Use additional Git repositories pulled in with `z4h install`.
-#
-# This is just an example that you should delete. It does nothing useful.
-# z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
-# z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
-
-# Define key bindings.
-z4h bindkey undo Ctrl+/   Shift+Tab  # undo the last command line change
-z4h bindkey redo Option+/            # redo the last undone command line change
-
-z4h bindkey z4h-cd-back    Shift+Left   # cd into the previous directory
-z4h bindkey z4h-cd-forward Shift+Right  # cd into the next directory
-z4h bindkey z4h-cd-up      Shift+Up     # cd into the parent directory
-z4h bindkey z4h-cd-down    Shift+Down   # cd into a child directory
-
-# https://github.com/romkatv/zsh4humans/blob/master/tips.md#prompt
-z4h bindkey z4h-eof Ctrl+D
-setopt ignore_eof
-POSTEDIT=$'\n\e[A'
-z4h bindkey z4h-accept-line Enter
-
-
-# Autoload functions.
+# Autoload standard functions
 autoload -Uz zmv
 
-# Set up fpath and autoload
-fpath=(~/.zsh/functions $fpath) # Add your functions directory to fpath
-setopt EXTENDED_GLOB
-autoload -Uz ~/.zsh/functions/*
+# Set up fpath for custom functions and completions
+fpath=(~/.zsh/functions $fpath)
 
-# Initialize the completion system
-# This scans fpath for #compdef tags and registers _md for the md command
+# Autoload all custom functions
+autoload -Uz ~/.zsh/functions/[^_]*(:t)
+
+# Initialize the completion system (scans fpath for #compdef tags)
 autoload -Uz compinit && compinit
 
-# Define named directories: ~w <=> Windows home directory on WSL.
+# ==============================================================================
+# Environment Configuration
+# ==============================================================================
+
+# Export environment variables
+export GPG_TTY=$TTY
+
+# Source additional local files if they exist
+z4h source ~/.env.zsh
+
+# Source modular configuration files from .zshrc.d/
+# Files starting with . are sourced (e.g., .aliases, .path, .databricksrc)
+z4h source ~/.zshrc.d/.[^_]*
+
+# ==============================================================================
+# Named Directories
+# ==============================================================================
+
+# Define named directories: ~w <=> Windows home directory on WSL
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
 
-# Alias ls to lsd if it is available
-if hash lsd 2>/dev/null; then
-  alias ls=lsd
-fi
+# ==============================================================================
+# Machine-Specific Configuration
+# ==============================================================================
 
-# Add flags to existing aliases.
-alias ls="${aliases[ls]:-ls} -A"
-alias ll="${aliases[ll]:-ls} -lA"
-alias la="${aliases[la]:-ls} -a"
-alias clear=z4h-clear-screen-soft-bottom
-
-# Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
-setopt glob_dots     # no special treatment for file names with a leading dot
-setopt no_auto_menu  # require an extra TAB press to open the completion menu
-
-# Show motd.dynamic if it exists.
-[ -e "/run/motd.dynamic" ] && cat /run/motd.dynamic
-
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/bradmann/.lmstudio/bin"
-# End of LM Studio CLI section
-
-
-# Added by Antigravity
-export PATH="/Users/bradmann/.antigravity/antigravity/bin:$PATH"
+# Source machine-specific overrides (not tracked by yadm)
+z4h source ~/.zshrc.local

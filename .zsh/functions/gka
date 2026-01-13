@@ -1,0 +1,8 @@
+# gka - Get Kubernetes access wrapper
+# Usage: gka [args...]
+
+function gka() {
+  ~/universe/eng-tools/bin/get-kube-access "$@"
+}
+
+gka "$@"

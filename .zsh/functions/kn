@@ -1,0 +1,14 @@
+# kn - Kubectl namespace switcher
+# Usage: kn [namespace]
+#   If namespace is provided, sets it as the current namespace
+#   If no namespace is provided, shows current namespace
+
+function kn() {
+  if [[ -n "$1" ]]; then
+    kubectl config set-context --current --namespace "$1"
+  else
+    kubectl config view --minify | grep namespace | cut -d" " -f6
+  fi
+}
+
+kn "$@"
