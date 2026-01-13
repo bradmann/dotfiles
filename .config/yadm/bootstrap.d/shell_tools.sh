@@ -6,6 +6,8 @@ system_type=$(uname -s)
 # Install build-essential on Ubuntu: https://packages.ubuntu.com/focal/build-essential
 if [ "$distro" = "Ubuntu" ]; then
     sudo apt install -y build-essential
+fi
+
 # Install Homebrew on macOS
 if [ "$system_type" = "Darwin" ]; then
     if ! command -v brew &> /dev/null; then
