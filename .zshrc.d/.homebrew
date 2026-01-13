@@ -12,3 +12,8 @@ elif [[ -f "/usr/local/bin/brew" ]]; then
   # Intel Mac
   eval "$(/usr/local/bin/brew shellenv)"
 fi
+
+# Add Homebrew completions to fpath (for databricks CLI, etc.)
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+fi
