@@ -133,3 +133,11 @@ setopt no_auto_menu  # require an extra TAB press to open the completion menu
 # Show motd.dynamic if it exists.
 [ -e "/run/motd.dynamic" ] && cat /run/motd.dynamic
 
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/bradmann/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# Added by Antigravity
+export PATH="/Users/bradmann/.antigravity/antigravity/bin:$PATH"

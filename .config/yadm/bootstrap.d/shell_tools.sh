@@ -6,6 +6,25 @@ system_type=$(uname -s)
 # Install build-essential on Ubuntu: https://packages.ubuntu.com/focal/build-essential
 if [ "$distro" = "Ubuntu" ]; then
     sudo apt install -y build-essential
+# Install Homebrew on macOS
+if [ "$system_type" = "Darwin" ]; then
+    if ! command -v brew &> /dev/null; then
+        echo "Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+        # Load Homebrew environment for the current script session
+        if [ -f "/opt/homebrew/bin/brew" ]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        elif [ -f "/usr/local/bin/brew" ]; then
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
+    fi
+
+    # Install bash via homebrew
+    if ! brew list bash &> /dev/null; then
+        echo "Installing bash via Homebrew..."
+        brew install bash
+    fi
 fi
 
 # Install rust/cargo: https://www.rust-lang.org/tools/install
