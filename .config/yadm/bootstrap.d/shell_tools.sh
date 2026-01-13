@@ -45,6 +45,12 @@ else
     fi
 fi
 
+# Install tmux plugin manager (tpm): https://github.com/tmux-plugins/tpm
+if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+    echo "Installing tmux plugin manager..."
+    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+fi
+
 # Install node fnm and nodejs
 if [ "$system_type" = "Darwin" ] || [ "$system_type" = "Linux" ]; then
     if ! command -v fnm &> /dev/null; then
