@@ -3,17 +3,23 @@ open_url() {
   local url="$1"
 
   if [[ -n "$BROWSER" ]]; then
-    # In Cursor/VS Code Remote SSH session
     "$BROWSER" "$url"
   elif [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS local
     open "$url"
-  elif command -v xdg-open &> /dev/null; then
-    # Linux with desktop
-    xdg-open "$url"
   else
-    # Fallback: print no support for opening URL
-    echo "No support for opening URL: $url"
-    return 1
+    # Auto-detect Cursor or VS Code browser helper for remote SSH sessions
+    local helper
+    helper=$(ls -t \
+      ~/.cursor-server/bin/linux-x64/*/bin/helpers/browser.sh \
+      ~/.vscode-server/cli/servers/Stable-*/server/bin/helpers/browser.sh \
+      2>/dev/null | head -1)
+    if [[ -n "$helper" ]]; then
+      "$helper" "$url"
+    elif command -v xdg-open &> /dev/null; then
+      xdg-open "$url"
+    else
+      echo "No support for opening URL: $url"
+      return 1
+    fi
   fi
 }
