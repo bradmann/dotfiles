@@ -14,7 +14,19 @@ open_url() {
       ~/.vscode-server/cli/servers/Stable-*/server/bin/helpers/browser.sh \
       2>/dev/null | head -1)
     if [[ -n "$helper" ]]; then
-      "$helper" "$url"
+      if [[ -z "$VSCODE_IPC_HOOK_CLI" ]]; then
+        local sock
+        sock=$(ls -t /run/user/$(id -u)/vscode-ipc-*.sock 2>/dev/null | head -1)
+        if [[ -n "$sock" ]]; then
+          VSCODE_IPC_HOOK_CLI="$sock" "$helper" "$url"
+        else
+          echo "Could not find IDE IPC socket. Open this URL manually:"
+          echo "$url"
+          return 1
+        fi
+      else
+        "$helper" "$url"
+      fi
     elif command -v xdg-open &> /dev/null; then
       xdg-open "$url"
     else
