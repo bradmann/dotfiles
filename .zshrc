@@ -118,6 +118,7 @@ z4h source ~/.zshrc.local
 # fnm
 FNM_PATH="/home/bradm/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
+  export XDG_RUNTIME_DIR="$HOME/.cache/xdgr"
   export PATH="$FNM_PATH:$PATH"
   eval "`fnm env`"
 fi
