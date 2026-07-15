@@ -114,3 +114,10 @@ z4h source ~/.zshrc.d/.[^_]*
 
 # Source machine-specific overrides (not tracked by yadm)
 z4h source ~/.zshrc.local
+
+# fnm
+FNM_PATH="/home/bradm/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "`fnm env`"
+fi
